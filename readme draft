@@ -1,0 +1,28 @@
+User Stories:
+
+Game should start with a blank 9 x 9 grid with no squares revealed and 10 randomly hidden mines
+
+left clicking any square should reveal it, revealing a mine should end the game
+
+the first square revealed should never be a mine, or have a mine within 2 squares
+
+Squares that don’t have a mine but are adjacent to any number of mines should show the number of mines they are adjacent to when revealed
+
+right clicking a square should put a flag on it, indicating the user believes it has a mine
+
+game should show how many mines remain unflagged
+
+game should should show how much time has passed since starting the puzzle, pausing when a mine is clicked or the game is won
+
+correctly flagging all mines and revealing all other squares wins the game
+
+clicking new game should take the grid back to the starting point and reset the timer
+
+
+Stretch goals:
+
+Choose different grid sizes / mine amounts
+
+choose different board shapes
+
+build option where game will always be solvable based on deductions, with no guessing required
