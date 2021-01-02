@@ -1,6 +1,6 @@
 On page load (or click of reset button) a board generation function should run.
 
-board generation should take in width (row length) and height (column length) generate an array of objects, with each object represending a square on the board.
+board generation should use global variables width (row length) and height (column length) populate the an array of objects, "mines", with a list of objects represending a square on the board.
 
 should start by setting puzzleStarted to false and deleting the HTML of the grid 
 
@@ -19,17 +19,17 @@ Southwest: id + width -1
 west: id - 1
 northwest: id - width - 1
 
-the generation function can be a for loop that runs a number of times equal to total
-total: width x height
+the generation function can be a for loop that runs a number of times equal to totalSquares
+totalSquares: width x height
 
 it can then trigger a series of if else statements, stopping to generate the object and add it to the array squares if the criteria is met
 
 top left corner (id = 0): E, SE, S
 top right corner (id = width): S, SW, W
-bottom left corner (id = total - width +1): N, NE, E
-bottom right corner (id = total): W, NW, N
+bottom left corner (id = totalSquares - width +1): N, NE, E
+bottom right corner (id = totalSquares): W, NW, N
 top edge (id > 0 && id < width):  E, SE, S, SW, W
-bottom edge (id > total - width + 1 && id < total): W, NW, N, NE, E
+bottom edge (id > totalSquares - width + 1 && id < totalSquares): W, NW, N, NE, E
 left edge (id % width = 0): N, NE, E, SE, S
 right edge (id % width = width - 1): S, SW, W, NW, N
 else: N, NE, E, SE, S, SW, W, NW
