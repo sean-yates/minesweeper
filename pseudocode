@@ -1,0 +1,104 @@
+On page load (or click of reset button) a board generation function should run.
+
+board generation should take in width (row length) and height (column length) generate an array of objects, with each object represending a square on the board.
+
+should start by setting puzzleStarted to false and deleting the HTML of the grid 
+
+These objects should have the properties: ID (int), revealed (boolean), adjacent mines (int, -2 means not checked and -1 means it's a mine), adjacent squares (array of ints), and flagged (boolean)
+
+Adjacent squares should be an array of the IDs of the objects representing adjacent squares(including diagonally)
+
+determining the adjacent squres should be possible mathematically:
+
+North: id - width
+NorthEast: id - width + 1
+East: id + 1
+SouthEast: id + width + 1
+south: id + width
+Southwest: id + width -1
+west: id - 1
+northwest: id - width - 1
+
+the generation function can be a for loop that runs a number of times equal to total
+total: width x height
+
+it can then trigger a series of if else statements, stopping to generate the object and add it to the array squares if the criteria is met
+
+top left corner (id = 0): E, SE, S
+top right corner (id = width): S, SW, W
+bottom left corner (id = total - width +1): N, NE, E
+bottom right corner (id = total): W, NW, N
+top edge (id > 0 && id < width):  E, SE, S, SW, W
+bottom edge (id > total - width + 1 && id < total): W, NW, N, NE, E
+left edge (id % width = 0): N, NE, E, SE, S
+right edge (id % width = width - 1): S, SW, W, NW, N
+else: N, NE, E, SE, S, SW, W, NW
+
+other than that they should have revealed: false,  adjacent mines: -2, and flagged = false
+
+TODO: this then generates an HTML grid somehow with the ID of each square being the ID of the object
+
+
+mine assigner:
+takes in the id of the clicked square
+run a number of times equal to the global variable mines
+then starts randomly generating numbers in the range of 0 through total retrying if the result is the clicked square, adjacent to the clicked square, or is already a mine
+set the adjacent mines of the square with the id generated to -1
+
+
+adjacency finder:
+    loop through squares, and for each:
+        loop thorugh adjacent squares, doing adjacent mines ++ where it fines -1 as the target's adjacent mines
+
+
+the click function:
+if flagged = true
+    return
+if (!puzzleStarted)
+    run the mine assigner, with the parameter being the ID of the square clicked
+    run the adjacency finder
+    puzzleStarted = true // continue with the logic of click from here
+if (revealed = true)
+    loop through adjacent squares and count how many are flagged 
+    if adjacent flagged = adjacent mines 
+        run click on adjacent, unrevealed squares (flagged squares will already do nothing)
+        return
+if (squareRevealer(squareid)) // reveals the square and returns true if it is a mine
+    return
+if adjacent mines is 0
+    run the click function on each adjacent square
+if revealed + mines = total // win checker, should only run here so don't need a separate function for it
+    announce you won the game
+
+
+square revealer:
+remove the unrevealed class from the square in HTML
+change 'revealed' on the object from false to true
+if the square is a mine
+    announce you lost the game and lock the board
+    return true
+add the adjacent mines as a class to the html square
+if adjacent mines > 0 
+    add adjacent mines as the text for the html square
+revealed++
+return false
+
+
+right click function:
+disable default right click functionality?
+if the square is already flagged
+    remove the flagged class to the html square (or change HTML to remove flag from content?)
+    set flagged to false on the square
+    flagged --
+else
+    add the flagged class to the html square (or change HTML to add flag as conent?)
+    set flagged to true on the square
+    flagged ++
+
+
+
+CSS:
+each adjacent mine amount should be a separate class with a different color
+
+revealed and unrevealed should determine the background color of a square
+
