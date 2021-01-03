@@ -87,10 +87,10 @@ function handleLeftClick(id){
     if (square.flagged){ // don't do anything if the square is already flagged
         return
     }
-    if (!puzzleStarted){
-       // TODO: run the mine assigner, with the parameter being the ID of the square clicked
-       // TODO: run the adjacency finder
-        puzzleStarted = true
+    if (!puzzleStarted){ // if this is the first time we click
+        mineAssigner(id) // set up the mines
+        adjacenyFinder() // and determine the adjacent mines count of each square
+        puzzleStarted = true // make sure we don't do it again
     }
     if (square.revealed) {
         return // TODO: multiple reveals by clicking a revealed square
@@ -116,4 +116,30 @@ function squareRevealer(id){ // reveals a square with the corresponding ID, retu
     console.log("PREST-O CHANGE-O")
 }
 
+function mineAssigner(startId) { // fills the board up with mines
+    currentMines = 0;
+    console.log(`${startId} is the origin`)
+    console.log(squares[startId].adjacentSquares)
+    while (currentMines < mines) {
+        potentialMine = squares[Math.floor(Math.random() * (squares.length))]
+        if ((potentialMine.id !== startId) && (!(squares[startId].adjacentSquares.includes(potentialMine.id))) && (potentialMine.adjacentMines !== -1)){ // doesn't do anything if it's where you clicked, or adjacent to where you clicked, or it's already a mine
+            potentialMine.adjacentMines = -1
+            console.log(`${potentialMine.id} is now a mine!`)
+            currentMines++
+        }
+    }
+}
+
+function adjacenyFinder() { // runs through all squares and sets the value of adjacent mines
+    squares.forEach((square) => {
+        if (square.adjacentMines !== -1){ // only do this if it's not a mine
+            console.log(`${square.id} is not a mine`)
+        } else{
+            console.log(`${square.id} is a mine`) 
+        }
+    })
+
+}
+
 boardGenerator()
+
