@@ -72,11 +72,48 @@ function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the 
     let cell = document.createElement("div");
     cell.innerText = (c);
     cell.id = (c);
+    cell.addEventListener("click",leftClickSquare)
     board.appendChild(cell).className = "grid-item";
   };
   board.style.width = `${30 * cols}px`
-  console.log(`${30 * cols}px`)
 };
 
+function leftClickSquare(e) { // had to split this out because I couldn't get the event listener to pass in the target, and I wanted to do recursion which means the function needs to work off id
+   handleLeftClick(e.target.id)
+}
+
+function handleLeftClick(id){
+    square = squares[id]
+    if (square.flagged){ // don't do anything if the square is already flagged
+        return
+    }
+    if (!puzzleStarted){
+       // TODO: run the mine assigner, with the parameter being the ID of the square clicked
+       // TODO: run the adjacency finder
+        puzzleStarted = true
+    }
+    if (square.revealed) {
+        return // TODO: multiple reveals by clicking a revealed square
+        // for(let i=0; i < square.adjacentSquares.length; i++){ // if the square is already revealed, click unrevealed squares around it assuming there are enough flags to cover potential mines
+        // }
+    }
+    if (squareRevealer(id)){ // reveals the square and returns true if it is a mine
+        return
+    }
+    if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent squares
+        square.adjacentSquares.forEach((adjSquare) =>{
+            handleLeftClick(adjSquare.id)
+        })
+    }
+    if (revealed + mines === height * width){
+        console.log("you win!") // TODO: make this an actual win result
+    }
+    console.log(square.adjacentSquares)
+}
+
+function squareRevealer(id){ // reveals a square with the corresponding ID, returns true if it is a mine or false otherwise
+    //TODO: actually make it do that
+    console.log("PREST-O CHANGE-O")
+}
 
 boardGenerator()
