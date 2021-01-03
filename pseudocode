@@ -37,18 +37,7 @@ else: N, NE, E, SE, S, SW, W, NW
 other than that they should have revealed: false,  adjacent mines: -2, and flagged = false
 
 TODO: this then generates an HTML grid somehow with the ID of each square being the ID of the object
-
-
-mine assigner:
-takes in the id of the clicked square
-run a number of times equal to the global variable mines
-then starts randomly generating numbers in the range of 0 through total retrying if the result is the clicked square, adjacent to the clicked square, or is already a mine
-set the adjacent mines of the square with the id generated to -1
-
-
-adjacency finder:
-    loop through squares, and for each:
-        loop thorugh adjacent squares, doing adjacent mines ++ where it fines -1 as the target's adjacent mines
+ok so
 
 
 the click function:
@@ -69,6 +58,18 @@ if adjacent mines is 0
     run the click function on each adjacent square
 if revealed + mines = total // win checker, should only run here so don't need a separate function for it
     announce you won the game
+
+
+mine assigner:
+takes in the id of the clicked square
+run a number of times equal to the global variable mines
+then starts randomly generating numbers in the range of 0 through total retrying if the result is the clicked square, adjacent to the clicked square, or is already a mine
+set the adjacent mines of the square with the id generated to -1
+
+
+adjacency finder:
+    loop through squares, and for each:
+        loop thorugh adjacent squares, doing adjacent mines ++ where it fines -1 as the target's adjacent mines
 
 
 square revealer:

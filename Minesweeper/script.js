@@ -1,3 +1,9 @@
+// GLOBAL CONSTANTS
+
+const board = document.getElementById("board");
+
+
+
 // GLOBAL VARIABLES
 let puzzleStarted = false;
 let width = 9;
@@ -11,7 +17,7 @@ let squares = []
 // functions
 
 function boardGenerator(){ // generates an array of objects with each object represending a square on the grid
-    //TODO to clear HTML here
+    board.innerHTML = ''; // remove the existing grid
     let totalSquares = width * height;
     for (let i = 0; i < totalSquares; i++) { // run a number of times equal to the number of squares there will be
         let newSquare = {}
@@ -56,11 +62,21 @@ function boardGenerator(){ // generates an array of objects with each object rep
         }
         squares.push(newSquare)
     }
-    console.log(squares)
+    makeRows(width, height); // generate a fresh grid with ids matching the squares array
 }
 
-
-
+function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the object IDs from squares
+  board.style.setProperty('--grid-rows', rows);
+  board.style.setProperty('--grid-cols', cols);
+  for (c = 0; c < (rows * cols); c++) {
+    let cell = document.createElement("div");
+    cell.innerText = (c);
+    cell.id = (c);
+    board.appendChild(cell).className = "grid-item";
+  };
+  board.style.width = `${30 * cols}px`
+  console.log(`${30 * cols}px`)
+};
 
 
 boardGenerator()
