@@ -91,11 +91,19 @@ function handleLeftClick(id){
         adjacenyFinder() // and determine the adjacent mines count of each square
         puzzleStarted = true // make sure we don't do it again
     }
-    if (square.revealed) {
-        return // TODO: multiple reveals by clicking a revealed square
-        // for(let i=0; i < square.adjacentSquares.length; i++){ // if the square is already revealed, click !!!UNREVELEAED!!! squares around it assuming there are enough flags to cover potential mines
-        // }
+    if (square.revealed) { // handles clicking on squares that are already revealed TODO: test this after flagging is implemented
+        let adjacentFlagged = 0;
+        square.adjacentSquares.forEach((adjSquare) =>{
+                if (squares[adjSquare].flagged) {adjacentFlagged++} // build a a count of adjacent flagged squares
+        })
+        if (square.adjacentMines - adjacentFlagged === 0) { // if enough squares are flagged, try clicking all unrevealed squares
+            square.adjacentSquares.forEach((adjSquare) =>{
+                if (!(squares[adjSquare].revealed)) {handleLeftClick(adjSquare)} // flagged squres already already ignored, so just need to skip revealed squares here
+            })
+        }
     }
+        
+        //click unrevealed squares around it assuming there are enough flags to cover potential mines
     if (squareRevealer(id)){return} // reveals the square and returns if it is a mine to stop the function
 
     if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent unrevealed squares
@@ -113,6 +121,7 @@ function squareRevealer(id){ // reveals a square with the corresponding ID, retu
     revealedCount++
     if (square.adjacentMines !== -1){ // only do this if it's not a mine
            $(`#${square.id}`).text(`${square.adjacentMines}`)
+           $(`#${square.id}`).addClass(`${square.adjacentMines}`)
            return false
         } else {
             $(`#${square.id}`).text(`M`) //TODO: change M to a mine icon

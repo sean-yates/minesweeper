@@ -24,3 +24,28 @@ body {
   width: 30px;
   line-height: 30px;
 }
+
+[class="1"] {
+  color: blue;
+}
+[class="2"] {
+  color: green;
+}
+[class="3"] {
+  color: red;
+}
+[class="4"] {
+  color: purple;
+}
+[class="5"] {
+  color: maroon;
+}
+[class="6"] {
+  color: turquoise;
+}
+[class="7"] {
+  color: black;
+}
+[class="8"] {
+  color: grey;
+}
