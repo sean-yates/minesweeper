@@ -12,7 +12,7 @@ let mines = 10;
 let revealedCount = 0;
 let flagged = 0;
 let squares = []
-
+let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 
 // functions
 
@@ -72,20 +72,20 @@ function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the 
     let cell = document.createElement("div");
     cell.id = (c);
     cell.addEventListener("click",leftClickSquare)
+    cell.addEventListener("contextmenu",rightClickSquare)
     board.appendChild(cell).className = "grid-item";
   };
   board.style.width = `${30 * cols}px`
 };
 
 function leftClickSquare(e) { // had to split this out because I couldn't get the event listener to pass in the target, and I wanted to do recursion which means the function needs to work off id
+    e.preventDefault()
    handleLeftClick(e.target.id)
 }
 
 function handleLeftClick(id){
     square = squares[id]
-    console.log(`clicking ${id}`)
     if (square.flagged){return}// don't do anything if the square is already flagged
-
     if (!puzzleStarted){ // if this is the first time we click
         mineAssigner(id) // set up the mines
         adjacenyFinder() // and determine the adjacent mines count of each square
@@ -98,12 +98,10 @@ function handleLeftClick(id){
         })
         if (square.adjacentMines - adjacentFlagged === 0) { // if enough squares are flagged, try clicking all unrevealed squares
             square.adjacentSquares.forEach((adjSquare) =>{
-                if (!(squares[adjSquare].revealed)) {handleLeftClick(adjSquare)} // flagged squres already already ignored, so just need to skip revealed squares here
+                if (!(squares[adjSquare].revealed) && (!(squares[adjSquare].flagged))) {handleLeftClick(adjSquare)} // flagged squres already already ignored, so just need to skip revealed squares here
             })
         }
     }
-        
-        //click unrevealed squares around it assuming there are enough flags to cover potential mines
     if (squareRevealer(id)){return} // reveals the square and returns if it is a mine to stop the function
 
     if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent unrevealed squares
@@ -111,16 +109,17 @@ function handleLeftClick(id){
             if (!(squares[adjSquare].revealed)) {handleLeftClick(adjSquare)}
         })
     }
-    if (revealedCount + mines === height * width){
+    if (revealedCount + mines === height * width && gameState === 0){
         console.log("you win!") // TODO: build out win scenario
+        gameState = 1
     }
 }
 
 function squareRevealer(id){ // reveals a square with the corresponding ID, returns true if it is a mine or false otherwise
+    if (!squares[id].revealed){revealedCount++}
     squares[id].revealed = true;
     $square = $(`#${square.id}`)
     $square.addClass(`revealed`)
-    revealedCount++
     if (square.adjacentMines !== -1){ // only do this if it's not a mine
            $square.addClass(`adj${square.adjacentMines}`)
            if (!(square.adjacentMines == 0)) {$square.text(`${square.adjacentMines}`)} // don't need to show 0
@@ -151,6 +150,18 @@ function adjacenyFinder() { // runs through all squares and sets the value of ad
             })
         }
     })
+}
+
+function rightClickSquare(e) {
+    e.preventDefault()
+    square = squares[e.target.id]
+    if (square.flagged) {
+        square.flagged = false
+        $(`#${square.id}`).text(``)
+    } else {
+        square.flagged = true
+        $(`#${square.id}`).text(`F`) // TODO: this should be the flag icon
+    }
 }
 
 
