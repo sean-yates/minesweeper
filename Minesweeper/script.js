@@ -83,6 +83,7 @@ function leftClickSquare(e) { // had to split this out because I couldn't get th
 
 function handleLeftClick(id){
     square = squares[id]
+    console.log(`clicking ${id}`)
     if (square.flagged){return}// don't do anything if the square is already flagged
 
     if (!puzzleStarted){ // if this is the first time we click
@@ -97,11 +98,11 @@ function handleLeftClick(id){
     }
     if (squareRevealer(id)){return} // reveals the square and returns if it is a mine to stop the function
 
-    // if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent squares
-    //     square.adjacentSquares.forEach((adjSquare) =>{ // TODO: doesn' work currently, 0s keeps getting undefined results sometimes
-    //         handleLeftClick(adjSquare.id)
-    //     })
-    // }
+    if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent unrevealed squares
+        square.adjacentSquares.forEach((adjSquare) =>{
+            if (!(squares[adjSquare].revealed)) {handleLeftClick(adjSquare)}
+        })
+    }
     if (revealedCount + mines === height * width){
         console.log("you win!") // TODO: build out win scenario
     }
