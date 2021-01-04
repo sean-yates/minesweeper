@@ -9,7 +9,7 @@ let puzzleStarted = false;
 let width = 9;
 let height = 9;
 let mines = 10;
-let revealed = 0;
+let revealedCount = 0;
 let flagged = 0;
 let squares = []
 
@@ -70,7 +70,6 @@ function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the 
   board.style.setProperty('--grid-cols', cols);
   for (c = 0; c < (rows * cols); c++) {
     let cell = document.createElement("div");
-    cell.innerText = (c);
     cell.id = (c);
     cell.addEventListener("click",leftClickSquare)
     board.appendChild(cell).className = "grid-item";
@@ -84,14 +83,11 @@ function leftClickSquare(e) { // had to split this out because I couldn't get th
 
 function handleLeftClick(id){
     square = squares[id]
-    console.log(square)
-    if (square.flagged){ // don't do anything if the square is already flagged
-        return
-    }
+    if (square.flagged){return}// don't do anything if the square is already flagged
+
     if (!puzzleStarted){ // if this is the first time we click
         mineAssigner(id) // set up the mines
         adjacenyFinder() // and determine the adjacent mines count of each square
-        visualizer() // TODO: remove this when we start working on hiding / revealing
         puzzleStarted = true // make sure we don't do it again
     }
     if (square.revealed) {
@@ -99,24 +95,29 @@ function handleLeftClick(id){
         // for(let i=0; i < square.adjacentSquares.length; i++){ // if the square is already revealed, click !!!UNREVELEAED!!! squares around it assuming there are enough flags to cover potential mines
         // }
     }
-    if (squareRevealer(id)){ // reveals the square and returns true if it is a mine
-        return
-    }
+    if (squareRevealer(id)){return} // reveals the square and returns if it is a mine to stop the function
+
     // if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent squares
     //     square.adjacentSquares.forEach((adjSquare) =>{ // TODO: doesn' work currently, 0s keeps getting undefined results sometimes
     //         handleLeftClick(adjSquare.id)
     //     })
     // }
-    if (revealed + mines === height * width){
-        console.log("you win!") // TODO: make this an actual win result
+    if (revealedCount + mines === height * width){
+        console.log("you win!") // TODO: build out win scenario
     }
-    console.log(square.adjacentSquares)
 }
 
 function squareRevealer(id){ // reveals a square with the corresponding ID, returns true if it is a mine or false otherwise
-    //TODO: actually make it do that
-    console.log("PREST-O CHANGE-O")
     squares[id].revealed = true;
+    revealedCount++
+    if (square.adjacentMines !== -1){ // only do this if it's not a mine
+           $(`#${square.id}`).text(`${square.adjacentMines}`)
+           return false
+        } else {
+            $(`#${square.id}`).text(`M`) //TODO: change M to a mine icon
+            console.log("you lose!") //TODO: built out lose scenario
+            return true
+        }
 }
 
 function mineAssigner(startId) { // fills the board up with mines
@@ -125,7 +126,6 @@ function mineAssigner(startId) { // fills the board up with mines
         potentialMine = squares[Math.floor(Math.random() * (squares.length))]
         if ((!(potentialMine.id == startId)) && (!(squares[startId].adjacentSquares.includes(potentialMine.id))) && (potentialMine.adjacentMines !== -1)){ // doesn't do anything if the mine would be near the opening click, or adjacent to where you clicked, or is already a mine
             potentialMine.adjacentMines = -1
-            console.log(`${potentialMine.id} is now a mine!`) // TODO: can remove this when we're done
             currentMines++
         }
     }
@@ -142,7 +142,7 @@ function adjacenyFinder() { // runs through all squares and sets the value of ad
 }
 
 
-function visualizer(){ // test tool, let results show up in the UI
+function cheat(){ // test tool, call this to show everything
     squares.forEach((square) => {
         if (square.adjacentMines !== -1){ // only do this if it's not a mine
            $(`#${square.id}`).text(`${square.adjacentMines}`)
