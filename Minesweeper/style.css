@@ -17,35 +17,40 @@ body {
 
 .grid-item {
   padding: 0;
-  border: 1px solid #ddd;
+  border: 1px solid darkgray;
   text-align: center;
-  font-size: 7px;
+  font-size: 15px;
   height: 30px;
   width: 30px;
   line-height: 30px;
+  background-color: gray;
 }
 
-[class="1"] {
+.revealed {
+  background-color: lightgray;
+}
+
+.adj1 {
   color: blue;
 }
-[class="2"] {
+.adj2 {
   color: green;
 }
-[class="3"] {
+.adj3 {
   color: red;
 }
-[class="4"] {
+.adj4 {
   color: purple;
 }
-[class="5"] {
+.adj5 {
   color: maroon;
 }
-[class="6"] {
+.adj6 {
   color: turquoise;
 }
-[class="7"] {
+.adj7 {
   color: black;
 }
-[class="8"] {
+.adj8 {
   color: grey;
 }

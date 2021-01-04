@@ -118,13 +118,15 @@ function handleLeftClick(id){
 
 function squareRevealer(id){ // reveals a square with the corresponding ID, returns true if it is a mine or false otherwise
     squares[id].revealed = true;
+    $square = $(`#${square.id}`)
+    $square.addClass(`revealed`)
     revealedCount++
     if (square.adjacentMines !== -1){ // only do this if it's not a mine
-           $(`#${square.id}`).text(`${square.adjacentMines}`)
-           $(`#${square.id}`).addClass(`${square.adjacentMines}`)
+           $square.addClass(`adj${square.adjacentMines}`)
+           if (!(square.adjacentMines == 0)) {$square.text(`${square.adjacentMines}`)} // don't need to show 0
            return false
         } else {
-            $(`#${square.id}`).text(`M`) //TODO: change M to a mine icon
+            $square.text(`M`) //TODO: change M to a mine icon
             console.log("you lose!") //TODO: built out lose scenario
             return true
         }
