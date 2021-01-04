@@ -23,7 +23,7 @@ function boardGenerator(){ // generates an array of objects with each object rep
         let newSquare = {}
         newSquare.id = i;
         newSquare.revealed = false;
-        newSquare.adjacentMines = -2;
+        newSquare.adjacentMines = 0;
         newSquare.flagged = false;
         newSquare.adjacentSquares = []; // starts empty, we will fill this based on square type
         let north = i - width // work out the id of each possible adjacent square
@@ -84,27 +84,29 @@ function leftClickSquare(e) { // had to split this out because I couldn't get th
 
 function handleLeftClick(id){
     square = squares[id]
+    console.log(square)
     if (square.flagged){ // don't do anything if the square is already flagged
         return
     }
     if (!puzzleStarted){ // if this is the first time we click
         mineAssigner(id) // set up the mines
         adjacenyFinder() // and determine the adjacent mines count of each square
+        visualizer() // TODO: remove this when we start working on hiding / revealing
         puzzleStarted = true // make sure we don't do it again
     }
     if (square.revealed) {
         return // TODO: multiple reveals by clicking a revealed square
-        // for(let i=0; i < square.adjacentSquares.length; i++){ // if the square is already revealed, click unrevealed squares around it assuming there are enough flags to cover potential mines
+        // for(let i=0; i < square.adjacentSquares.length; i++){ // if the square is already revealed, click !!!UNREVELEAED!!! squares around it assuming there are enough flags to cover potential mines
         // }
     }
     if (squareRevealer(id)){ // reveals the square and returns true if it is a mine
         return
     }
-    if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent squares
-        square.adjacentSquares.forEach((adjSquare) =>{
-            handleLeftClick(adjSquare.id)
-        })
-    }
+    // if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent squares
+    //     square.adjacentSquares.forEach((adjSquare) =>{ // TODO: doesn' work currently, 0s keeps getting undefined results sometimes
+    //         handleLeftClick(adjSquare.id)
+    //     })
+    // }
     if (revealed + mines === height * width){
         console.log("you win!") // TODO: make this an actual win result
     }
@@ -114,17 +116,16 @@ function handleLeftClick(id){
 function squareRevealer(id){ // reveals a square with the corresponding ID, returns true if it is a mine or false otherwise
     //TODO: actually make it do that
     console.log("PREST-O CHANGE-O")
+    squares[id].revealed = true;
 }
 
 function mineAssigner(startId) { // fills the board up with mines
     currentMines = 0;
-    console.log(`${startId} is the origin`)
-    console.log(squares[startId].adjacentSquares)
     while (currentMines < mines) {
         potentialMine = squares[Math.floor(Math.random() * (squares.length))]
-        if ((potentialMine.id !== startId) && (!(squares[startId].adjacentSquares.includes(potentialMine.id))) && (potentialMine.adjacentMines !== -1)){ // doesn't do anything if it's where you clicked, or adjacent to where you clicked, or it's already a mine
+        if ((!(potentialMine.id == startId)) && (!(squares[startId].adjacentSquares.includes(potentialMine.id))) && (potentialMine.adjacentMines !== -1)){ // doesn't do anything if the mine would be near the opening click, or adjacent to where you clicked, or is already a mine
             potentialMine.adjacentMines = -1
-            console.log(`${potentialMine.id} is now a mine!`)
+            console.log(`${potentialMine.id} is now a mine!`) // TODO: can remove this when we're done
             currentMines++
         }
     }
@@ -133,13 +134,23 @@ function mineAssigner(startId) { // fills the board up with mines
 function adjacenyFinder() { // runs through all squares and sets the value of adjacent mines
     squares.forEach((square) => {
         if (square.adjacentMines !== -1){ // only do this if it's not a mine
-            console.log(`${square.id} is not a mine`)
-        } else{
-            console.log(`${square.id} is a mine`) 
+           square.adjacentSquares.forEach((adjSquare) => {
+                if(squares[adjSquare].adjacentMines === -1) {square.adjacentMines++} // loop through the adjacent squares of each and built a count of mines
+            })
         }
     })
-
 }
 
+
+function visualizer(){ // test tool, let results show up in the UI
+    squares.forEach((square) => {
+        if (square.adjacentMines !== -1){ // only do this if it's not a mine
+           $(`#${square.id}`).text(`${square.adjacentMines}`)
+        } else {
+            $(`#${square.id}`).text(`M`)
+        }
+        
+    })
+}
 boardGenerator()
 
