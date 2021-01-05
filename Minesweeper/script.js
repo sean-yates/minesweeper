@@ -91,10 +91,10 @@ function handleLeftClick(id){
         adjacenyFinder() // and determine the adjacent mines count of each square
         puzzleStarted = true // make sure we don't do it again
     }
-    if (square.revealed) { // handles clicking on squares that are already revealed TODO: test this after flagging is implemented
+    if (square.revealed) { // handles clicking on squares that are already revealed
         let adjacentFlagged = 0;
         square.adjacentSquares.forEach((adjSquare) =>{
-                if (squares[adjSquare].flagged) {adjacentFlagged++} // build a a count of adjacent flagged squares
+                if (squares[adjSquare].flagged) {adjacentFlagged++} // build a count of adjacent flagged squares
         })
         if (square.adjacentMines - adjacentFlagged === 0) { // if enough squares are flagged, try clicking all unrevealed squares
             square.adjacentSquares.forEach((adjSquare) =>{
@@ -125,8 +125,11 @@ function squareRevealer(id){ // reveals a square with the corresponding ID, retu
            if (!(square.adjacentMines == 0)) {$square.text(`${square.adjacentMines}`)} // don't need to show 0
            return false
         } else {
-            $square.text(`M`) //TODO: change M to a mine icon
-            console.log("you lose!") //TODO: built out lose scenario
+            $square.text(`💣`)
+            if (gameState === 0) {
+                console.log("you lose!") //TODO: built out lose scenario
+                gameState = -1
+            }
             return true
         }
 }
@@ -158,9 +161,10 @@ function rightClickSquare(e) {
     if (square.flagged) {
         square.flagged = false
         $(`#${square.id}`).text(``)
-    } else {
+    } else 
+    if (!square.revealed){
         square.flagged = true
-        $(`#${square.id}`).text(`F`) // TODO: this should be the flag icon
+        $(`#${square.id}`).text(`🚩`)
     }
 }
 
