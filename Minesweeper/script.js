@@ -11,6 +11,7 @@ const $rowInput = $("#rowInput")
 const $columnInput = $("#columnInput")
 const $main = $("main")
 const $settings = $("#settings")
+const $remainingMinesCount = $("#remainingMinesCount")
 
 // GLOBAL VARIABLES
 let puzzleStarted = false;
@@ -18,7 +19,7 @@ let width = 9;
 let height = 9;
 let mines = 10;
 let revealedCount = 0;
-let flagged = 0;
+let totalFlagged = 0;
 let squares = []
 let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 
@@ -38,6 +39,7 @@ function boardGenerator(){ // generates an array of objects with each object rep
     squares = []
     revealedCount = 0;
     gameState = 0;
+    totalFlagged = 0;
     $(".result").remove()
     let totalSquares = width * height;
     for (let i = 0; i < totalSquares; i++) { // run a number of times equal to the number of squares there will be
@@ -182,11 +184,14 @@ function rightClickSquare(e) {
     if (square.flagged) {
         square.flagged = false
         $(`#${square.id}`).text(``)
+        totalFlagged--
     } else 
     if (!square.revealed){
         square.flagged = true
         $(`#${square.id}`).text(`🚩`)
+        totalFlagged++
     }
+    $remainingMinesCount.text(`${mines - totalFlagged}`)
 }
 
 function resetBoard() {
@@ -247,11 +252,9 @@ function endGame() {
         document.getElementById(`${square.id}`).removeEventListener("contextmenu",rightClickSquare)
     })
     if(gameState === 1) { //announce that you won or lost
-        console.log("win")
         $settings.append(`<div id="winResult" class="result">you won!</div>`)
     }
     if (gameState === -1) {
-        console.log("lose")
         $settings.append(`<div id="loseResult" class="result">you lost :(</div>`)
     }
 }

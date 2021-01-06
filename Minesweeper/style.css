@@ -92,3 +92,13 @@ h1 {
 #mineInput {
   width: 40px;
 }
+
+#remainingMines {
+  display: block;
+  text-align: center;
+  padding: 5px;
+}
+
+#remainingMinesCount {
+  display: inline;
+}
