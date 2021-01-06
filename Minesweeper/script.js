@@ -34,6 +34,7 @@ xHardButton.addEventListener("click",determineParameters)
 function boardGenerator(){ // generates an array of objects with each object represending a square on the grid
     board.innerHTML = ''; // remove the existing grid
     squares = []
+    revealedCount = 0;
     let totalSquares = width * height;
     for (let i = 0; i < totalSquares; i++) { // run a number of times equal to the number of squares there will be
         let newSquare = {}
