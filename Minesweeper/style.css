@@ -18,6 +18,9 @@ h1 {
   width: 28px;
   display: inline;
 }
+.defaultButton {
+  display: inline;
+}
 
 #board {
   margin-left: auto;
@@ -73,4 +76,13 @@ h1 {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
+}
+
+#defaultsContainer {
+  display: block;
+  text-align: center;
+}
+
+#mineInput {
+  width: 40px;
 }

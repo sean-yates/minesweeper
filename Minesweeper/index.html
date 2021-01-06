@@ -28,12 +28,18 @@
   
   <main>
       <h1>Minesweeper</h1>
+      <div id="defaultsContainer">
+        <button id="easyDefaults" class="defaultButton">Easy</button>
+        <button id="mediumDefaults" class="defaultButton">Medium</button>
+        <button id="hardDefaults" class="defaultButton">Hard</button>
+        <button id="xHardDefaults" class="defaultButton">Extra Hard</button> 
+      </div>
       <div id="inputContainer">
         Mines:
         <input id="mineInput" type="int" class="parameter">
-        Rows:
+        Height:
         <input id="rowInput" type="int" class="parameter">
-        Columns:
+        Width:
         <input id="columnInput" type="int" class="parameter">
     </div>
     <button id="resetButton">Reset Board</button>

@@ -2,7 +2,13 @@
 
 const board = document.getElementById("board");
 const resetButton = document.getElementById("resetButton")
-
+const easyButton = document.getElementById("easyDefaults")
+const mediumButton = document.getElementById("mediumDefaults")
+const hardButton = document.getElementById("hardDefaults")
+const xHardButton = document.getElementById("xHardDefaults")
+const $mineInput = $("#mineInput")
+const $rowInput = $("#rowInput")
+const $columnInput = $("#columnInput")
 
 // GLOBAL VARIABLES
 let puzzleStarted = false;
@@ -18,6 +24,10 @@ let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 // listeners
 
 resetButton.addEventListener("click",resetBoard)
+easyButton.addEventListener("click",determineParameters)
+mediumButton.addEventListener("click",determineParameters)
+hardButton.addEventListener("click",determineParameters)
+xHardButton.addEventListener("click",determineParameters)
 
 // functions
 
@@ -175,9 +185,9 @@ function rightClickSquare(e) {
 }
 
 function resetBoard() {
-    let potentialMines = parseInt($("#mineInput").val()) //TODO: throw an error if it's not parseable?
-    let potentialRows = parseInt($("#rowInput").val())
-    let potentialColumns = parseInt($("#columnInput").val())
+    let potentialMines = parseInt($mineInput.val()) //TODO: throw an error if it's not parseable?
+    let potentialRows = parseInt($rowInput.val())
+    let potentialColumns = parseInt($columnInput.val())
     if (potentialRows > 40) { // when I get to 50 x 50 i start getting maximum call stack size errors
         console.log("max 40 rows") // TODO: make this an alert
         return
@@ -204,15 +214,31 @@ function resetBoard() {
         puzzleStarted = false;
     }
 }
+function determineParameters(e){
+    buttonClicked = e.target.id
+    console.log(e.target.id)
+    if (buttonClicked === 'easyDefaults') {setParameters(10,9,9)}
+    if (buttonClicked === 'mediumDefaults') {setParameters(40,16,16)}
+    if (buttonClicked === 'hardDefaults') {setParameters(99,16,30)}
+    if (buttonClicked === 'xHardDefaults') {setParameters(180,24,30)} 
+}
 
-function defaultSetter(){ //TODO: may want to remove if we can figure out a better way
-    $("#mineInput").val(10)
-    $("#rowInput").val(9)
-    $("#columnInput").val(9)
+function setParameters(newMines,newHeight,newWidth){
+    console.log("cleek")
+    $mineInput.val(newMines)
+    $rowInput.val(newHeight)
+    $columnInput.val(newWidth)
 }
 
 
-function cheat(){ // test tool, call this to show everything
+function defaultSetter(){
+    $mineInput.val(10)
+    $rowInput.val(9)
+    $columnInput.val(9)
+}
+
+
+function cheat(){ // test tool, call this to show everything. Only works if the game is started
     squares.forEach((square) => {
         if (square.adjacentMines !== -1){ // only do this if it's not a mine
            $(`#${square.id}`).text(`${square.adjacentMines}`)
@@ -222,5 +248,6 @@ function cheat(){ // test tool, call this to show everything
         
     })
 }
+
 boardGenerator()
 defaultSetter()
