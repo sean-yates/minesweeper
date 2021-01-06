@@ -9,6 +9,8 @@ const xHardButton = document.getElementById("xHardDefaults")
 const $mineInput = $("#mineInput")
 const $rowInput = $("#rowInput")
 const $columnInput = $("#columnInput")
+const $main = $("main")
+const $settings = $("#settings")
 
 // GLOBAL VARIABLES
 let puzzleStarted = false;
@@ -35,6 +37,8 @@ function boardGenerator(){ // generates an array of objects with each object rep
     board.innerHTML = ''; // remove the existing grid
     squares = []
     revealedCount = 0;
+    gameState = 0;
+    $(".result").remove()
     let totalSquares = width * height;
     for (let i = 0; i < totalSquares; i++) { // run a number of times equal to the number of squares there will be
         let newSquare = {}
@@ -127,8 +131,8 @@ function handleLeftClick(id){
         })
     }
     if (revealedCount + mines === height * width && gameState === 0){
-        console.log("you win!") // TODO: build out win scenario
         gameState = 1
+        endGame()
     }
 }
 
@@ -144,8 +148,8 @@ function squareRevealer(id){ // reveals a square with the corresponding ID, retu
         } else {
             $square.text(`💣`)
             if (gameState === 0) {
-                console.log("you lose!") //TODO: built out lose scenario
                 gameState = -1
+                endGame()
             }
             return true
         }
@@ -217,7 +221,6 @@ function resetBoard() {
 }
 function determineParameters(e){
     buttonClicked = e.target.id
-    console.log(e.target.id)
     if (buttonClicked === 'easyDefaults') {setParameters(10,9,9)}
     if (buttonClicked === 'mediumDefaults') {setParameters(40,16,16)}
     if (buttonClicked === 'hardDefaults') {setParameters(99,16,30)}
@@ -225,7 +228,6 @@ function determineParameters(e){
 }
 
 function setParameters(newMines,newHeight,newWidth){
-    console.log("cleek")
     $mineInput.val(newMines)
     $rowInput.val(newHeight)
     $columnInput.val(newWidth)
@@ -238,6 +240,21 @@ function defaultSetter(){
     $columnInput.val(9)
 }
 
+
+function endGame() { 
+    squares.forEach((square) => { // stop any more clicking on the board
+        document.getElementById(`${square.id}`).removeEventListener("click",leftClickSquare)
+        document.getElementById(`${square.id}`).removeEventListener("contextmenu",rightClickSquare)
+    })
+    if(gameState === 1) { //announce that you won or lost
+        console.log("win")
+        $settings.append(`<div id="winResult" class="result">you won!</div>`)
+    }
+    if (gameState === -1) {
+        console.log("lose")
+        $settings.append(`<div id="loseResult" class="result">you lost :(</div>`)
+    }
+}
 
 function cheat(){ // test tool, call this to show everything. Only works if the game is started
     squares.forEach((square) => {
