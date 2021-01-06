@@ -1,7 +1,7 @@
 // GLOBAL CONSTANTS
 
 const board = document.getElementById("board");
-
+const resetButton = document.getElementById("resetButton")
 
 
 // GLOBAL VARIABLES
@@ -14,10 +14,16 @@ let flagged = 0;
 let squares = []
 let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 
+
+// listeners
+
+resetButton.addEventListener("click",resetBoard)
+
 // functions
 
 function boardGenerator(){ // generates an array of objects with each object represending a square on the grid
     board.innerHTML = ''; // remove the existing grid
+    squares = []
     let totalSquares = width * height;
     for (let i = 0; i < totalSquares; i++) { // run a number of times equal to the number of squares there will be
         let newSquare = {}
@@ -62,7 +68,7 @@ function boardGenerator(){ // generates an array of objects with each object rep
         }
         squares.push(newSquare)
     }
-    makeRows(width, height); // generate a fresh grid with ids matching the squares array
+    makeRows(height, width); // generate a fresh grid with ids matching the squares array
 }
 
 function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the object IDs from squares
@@ -168,6 +174,43 @@ function rightClickSquare(e) {
     }
 }
 
+function resetBoard() {
+    let potentialMines = parseInt($("#mineInput").val()) //TODO: throw an error if it's not parseable?
+    let potentialRows = parseInt($("#rowInput").val())
+    let potentialColumns = parseInt($("#columnInput").val())
+    if (potentialRows > 40) { // when I get to 50 x 50 i start getting maximum call stack size errors
+        console.log("max 40 rows") // TODO: make this an alert
+        return
+    } else 
+    if (potentialColumns > 40) {
+        console.log("max 40 columns") // TODO: make this an alert
+        return
+    }
+    if (potentialRows < 9) {
+        console.log("min 9 rows") // TODO: make this an alert
+        return
+    } else 
+    if (potentialColumns < 9) {
+        console.log("min 9 columns") // TODO: make this an alert
+        return
+    } else
+    if (potentialMines > ((potentialRows * potentialColumns) - 9)) {
+        console.log(`Too many mines for this grid size, maximum is ${(potentialRows * potentialMines) - 9}`) // TODO: make this an alert
+    } else {
+        mines = potentialMines
+        width = potentialColumns
+        height = potentialRows
+        boardGenerator()
+        puzzleStarted = false;
+    }
+}
+
+function defaultSetter(){ //TODO: may want to remove if we can figure out a better way
+    $("#mineInput").val(10)
+    $("#rowInput").val(9)
+    $("#columnInput").val(9)
+}
+
 
 function cheat(){ // test tool, call this to show everything
     squares.forEach((square) => {
@@ -180,4 +223,4 @@ function cheat(){ // test tool, call this to show everything
     })
 }
 boardGenerator()
-
+defaultSetter()

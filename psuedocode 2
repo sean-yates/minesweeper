@@ -9,7 +9,6 @@ so here is that list:
 3. Reset button, returns the board to a base state using values from fields on step 1
     a. should stop and throw an error if you request too many mines (more than total size - 9)
     b. max height and width as well?
-4. Make mines and flags use the classic icons
-5. Make win and lose conditions freeze the board and send a message
-6. fill out readme page
-7. check assignemnt for other requirements
+4. Make win and lose conditions freeze the board and send a message
+5. fill out readme page
+6. check assignemnt for other requirements
