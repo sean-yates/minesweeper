@@ -4,12 +4,11 @@ Ok so I did everything I set out to do in Pseudocode 1 and I have working minesw
 now we want a list of nice to have features to complete, at which point we will feel comfortable beginning to work on the solvability problem
 so here is that list:
 
-1. buttons that set these values to some default combinations (small, medium, large)
-2. Make win and lose conditions freeze the board and send a message
-3. Show remaining mine count
-4. various todos in comments
-5. fill out readme page
-6. add how to play page 
-7. check assignemnt for other requirements
-8. figure out how to host online?
-9. have options for the board be the only thing on the page till the board generates, then go away until you want to generate a new board
+1. Show remaining mine count
+2. various todos in comments
+3. fill out readme page
+4. add how to play page 
+5. check assignemnt for other requirements
+6. figure out how to host online?
+7. make win and lose prettier, maybe there are more visuall appealing alerts?
+8. have board settings be the only thing on the page till the board generates, then go away until you want to generate a new board
