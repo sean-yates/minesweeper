@@ -94,11 +94,19 @@ h1 {
 }
 
 #remainingMines {
-  display: block;
-  text-align: center;
-  padding: 5px;
+  display: inline;
+  text-align: left;
 }
 
 #remainingMinesCount {
   display: inline;
+}
+#timeContainer {
+  display: inline;
+  float: right;
+}
+
+#boardContainer {
+  width: 30px;
+  margin: 0 auto;
 }

@@ -1,6 +1,7 @@
 // GLOBAL CONSTANTS
 
 const board = document.getElementById("board");
+const boardContainer = document.getElementById("boardContainer");
 const resetButton = document.getElementById("resetButton")
 const easyButton = document.getElementById("easyDefaults")
 const mediumButton = document.getElementById("mediumDefaults")
@@ -12,6 +13,8 @@ const $columnInput = $("#columnInput")
 const $main = $("main")
 const $settings = $("#settings")
 const $remainingMinesCount = $("#remainingMinesCount")
+const $timer = $("#timer")
+
 
 // GLOBAL VARIABLES
 let puzzleStarted = false;
@@ -22,7 +25,8 @@ let revealedCount = 0;
 let totalFlagged = 0;
 let squares = []
 let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
-
+let sec = 0;
+let timer
 
 // listeners
 
@@ -91,6 +95,7 @@ function boardGenerator(){ // generates an array of objects with each object rep
 function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the object IDs from squares
   board.style.setProperty('--grid-rows', rows);
   board.style.setProperty('--grid-cols', cols);
+  boardContainer.style.setProperty('width', `${cols *30}px`); // only way i could get the width of the container to work
   for (c = 0; c < (rows * cols); c++) {
     let cell = document.createElement("div");
     cell.id = (c);
@@ -112,6 +117,7 @@ function handleLeftClick(id){
     if (!puzzleStarted){ // if this is the first time we click
         mineAssigner(id) // set up the mines
         adjacenyFinder() // and determine the adjacent mines count of each square
+        startTimer() // start the timer
         puzzleStarted = true // make sure we don't do it again
     }
     if (square.revealed) { // handles clicking on squares that are already revealed
@@ -198,7 +204,7 @@ function resetBoard() {
     let potentialMines = parseInt($mineInput.val())
     let potentialRows = parseInt($rowInput.val())
     let potentialColumns = parseInt($columnInput.val())
-    console.log(potentialMines)
+    $timer.html('0:00')
     if(isNaN(potentialMines) || isNaN(potentialRows) || isNaN(potentialColumns)) {
         alert("Mines, width, and height must all be numbers")
         return
@@ -255,7 +261,8 @@ function defaultSetter(){
 }
 
 
-function endGame() { 
+function endGame() {
+    endTimer() 
     squares.forEach((square) => { // stop any more clicking on the board
         document.getElementById(`${square.id}`).removeEventListener("click",leftClickSquare)
         document.getElementById(`${square.id}`).removeEventListener("contextmenu",rightClickSquare)
@@ -278,6 +285,24 @@ function cheat(){ // test tool, call this to show everything. Only works if the 
         
     })
 }
+
+function pad ( val ) { return val > 9 ? val : "0" + val; }
+
+function startTimer() {
+    timer = setInterval( function(){
+    // $seconds.html(pad(++sec%60));
+    // $minutes.html(pad(parseInt(sec/60,10)));
+
+    $timer.html(`${parseInt(sec/60,10)}:${pad(++sec%60)}`);
+}, 1000);
+
+}
+
+function endTimer() {
+    clearInterval(timer)
+}
+    
+
 
 boardGenerator()
 defaultSetter()
