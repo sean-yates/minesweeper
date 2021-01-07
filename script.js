@@ -26,7 +26,8 @@ let totalFlagged = 0;
 let squares = []
 let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 let sec = 0;
-let timer
+let timer = 0;
+let resetTimer = false;
 
 // listeners
 
@@ -205,6 +206,8 @@ function resetBoard() {
     let potentialRows = parseInt($rowInput.val())
     let potentialColumns = parseInt($columnInput.val())
     $timer.html('0:00')
+    sec = 0;
+    endTimer()
     if(isNaN(potentialMines) || isNaN(potentialRows) || isNaN(potentialColumns)) {
         alert("Mines, width, and height must all be numbers")
         return
@@ -251,6 +254,7 @@ function setParameters(newMines,newHeight,newWidth){
     $mineInput.val(newMines)
     $rowInput.val(newHeight)
     $columnInput.val(newWidth)
+    resetBoard()
 }
 
 
@@ -290,15 +294,11 @@ function pad ( val ) { return val > 9 ? val : "0" + val; }
 
 function startTimer() {
     timer = setInterval( function(){
-    // $seconds.html(pad(++sec%60));
-    // $minutes.html(pad(parseInt(sec/60,10)));
-
-    $timer.html(`${parseInt(sec/60,10)}:${pad(++sec%60)}`);
-}, 1000);
-
+        $timer.html(`${parseInt(sec/60,10)}:${pad(++sec%60)}`);
+    }, 1000);
 }
 
-function endTimer() {
+function endTimer() { // doesn't fully work, it resets the timer but later if you start the timer back up it picks up where it left off
     clearInterval(timer)
 }
     
