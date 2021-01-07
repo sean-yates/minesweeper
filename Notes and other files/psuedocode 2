@@ -1,0 +1,14 @@
+Ok so I did everything I set out to do in Pseudocode 1 and I have working minesweeper
+
+
+now we want a list of nice to have features to complete, at which point we will feel comfortable beginning to work on the solvability problem
+so here is that list:
+
+1. host through github
+2. fill out readme page
+3. add how to play page 
+4. check assignemnt for other requirements
+5. make win and lose prettier, maybe there are more visually appealing alerts?
+6. have board settings be the only thing on the page till the board generates, then go away until you want to generate a new board
+7. add background and improve some of the colors?
+8. try and get the classic flag and mine icons

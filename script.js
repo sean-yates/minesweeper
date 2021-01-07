@@ -195,28 +195,37 @@ function rightClickSquare(e) {
 }
 
 function resetBoard() {
-    let potentialMines = parseInt($mineInput.val()) //TODO: throw an error if it's not parseable?
+    let potentialMines = parseInt($mineInput.val())
     let potentialRows = parseInt($rowInput.val())
     let potentialColumns = parseInt($columnInput.val())
+    console.log(potentialMines)
+    if(isNaN(potentialMines) || isNaN(potentialRows) || isNaN(potentialColumns)) {
+        alert("Mines, width, and height must all be numbers")
+        return
+    }
     if (potentialRows > 40) { // when I get to 50 x 50 i start getting maximum call stack size errors
-        console.log("max 40 rows") // TODO: make this an alert
+        alert("The maximum height is 40")
         return
     } else 
     if (potentialColumns > 40) {
-        console.log("max 40 columns") // TODO: make this an alert
+        alert("The maximum width is 40")
         return
     }
     if (potentialRows < 9) {
-        console.log("min 9 rows") // TODO: make this an alert
+        alert("The minimum height is 9")
         return
     } else 
     if (potentialColumns < 9) {
-        console.log("min 9 columns") // TODO: make this an alert
+        alert("The minimum width is 9")
         return
     } else
     if (potentialMines > ((potentialRows * potentialColumns) - 9)) {
-        console.log(`Too many mines for this grid size, maximum is ${(potentialRows * potentialMines) - 9}`) // TODO: make this an alert
-    } else {
+        alert(`Too many mines for this grid size, maximum is ${(potentialRows * potentialMines) - 9}`) //mine generator needs at least 9 clear spaces
+    } else 
+    if(potentialMines < 1){
+        alert("You must have at least 1 mine")
+        return
+    } else{
         mines = potentialMines
         width = potentialColumns
         height = potentialRows
