@@ -58,9 +58,10 @@ Stretch goals:
 
 Choose different grid sizes / mine amounts (done)
 
+Add ability to store and view high scores across sessions
+
 build option where game will always be solvable based on deductions, with no guessing required
 
-choose different board shapes
 
 ## App Demo 
 Link to GitHub project (i.e. - username.github.io)

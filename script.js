@@ -26,8 +26,7 @@ let totalFlagged = 0;
 let squares = []
 let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 let sec = 0;
-let timer = 0;
-let resetTimer = false;
+let timer
 
 // listeners
 
@@ -298,9 +297,7 @@ function startTimer() {
     }, 1000);
 }
 
-function endTimer() { // doesn't fully work, it resets the timer but later if you start the timer back up it picks up where it left off
-    clearInterval(timer)
-}
+function endTimer() {clearInterval(timer)}
     
 
 

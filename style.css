@@ -9,6 +9,10 @@ h1 {
   text-align: center;
 }
 
+p {
+  margin-left: 15%;
+  margin-right: 15%;
+}
 #inputContainer {
   text-align: center;
   padding: 20px;
@@ -35,6 +39,10 @@ h1 {
   grid-gap: 0;
   grid-template-rows: repeat(var(--grid-rows), 30px);
   grid-template-columns: repeat(var(--grid-cols), 30px);
+}
+
+.navBar {
+  margin-left: auto;
 }
 
 .grid-item {
