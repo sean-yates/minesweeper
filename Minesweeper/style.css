@@ -5,6 +5,22 @@ body {
   --grid-cols: 1;
   --grid-rows: 1;
 }
+h1 {
+  text-align: center;
+}
+
+#inputContainer {
+  text-align: center;
+  padding: 20px;
+}
+
+.parameter {
+  width: 28px;
+  display: inline;
+}
+.defaultButton {
+  display: inline;
+}
 
 #board {
   margin-left: auto;
@@ -17,10 +33,56 @@ body {
 
 .grid-item {
   padding: 0;
-  border: 1px solid #ddd;
+  border: 1px solid darkgray;
   text-align: center;
-  font-size: 7px;
+  font-size: 15px;
   height: 30px;
   width: 30px;
   line-height: 30px;
+  background-color: gray;
+}
+
+.revealed {
+  background-color: lightgray;
+}
+
+.adj1 {
+  color: blue;
+}
+.adj2 {
+  color: green;
+}
+.adj3 {
+  color: red;
+}
+.adj4 {
+  color: purple;
+}
+.adj5 {
+  color: maroon;
+}
+.adj6 {
+  color: turquoise;
+}
+.adj7 {
+  color: black;
+}
+.adj8 {
+  color: grey;
+}
+
+#resetButton {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+#defaultsContainer {
+  display: block;
+  text-align: center;
+}
+
+#mineInput {
+  width: 40px;
 }

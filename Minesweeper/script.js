@@ -1,23 +1,39 @@
 // GLOBAL CONSTANTS
 
 const board = document.getElementById("board");
-
-
+const resetButton = document.getElementById("resetButton")
+const easyButton = document.getElementById("easyDefaults")
+const mediumButton = document.getElementById("mediumDefaults")
+const hardButton = document.getElementById("hardDefaults")
+const xHardButton = document.getElementById("xHardDefaults")
+const $mineInput = $("#mineInput")
+const $rowInput = $("#rowInput")
+const $columnInput = $("#columnInput")
 
 // GLOBAL VARIABLES
 let puzzleStarted = false;
 let width = 9;
 let height = 9;
 let mines = 10;
-let revealed = 0;
+let revealedCount = 0;
 let flagged = 0;
 let squares = []
+let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 
+
+// listeners
+
+resetButton.addEventListener("click",resetBoard)
+easyButton.addEventListener("click",determineParameters)
+mediumButton.addEventListener("click",determineParameters)
+hardButton.addEventListener("click",determineParameters)
+xHardButton.addEventListener("click",determineParameters)
 
 // functions
 
 function boardGenerator(){ // generates an array of objects with each object represending a square on the grid
     board.innerHTML = ''; // remove the existing grid
+    squares = []
     let totalSquares = width * height;
     for (let i = 0; i < totalSquares; i++) { // run a number of times equal to the number of squares there will be
         let newSquare = {}
@@ -62,7 +78,7 @@ function boardGenerator(){ // generates an array of objects with each object rep
         }
         squares.push(newSquare)
     }
-    makeRows(width, height); // generate a fresh grid with ids matching the squares array
+    makeRows(height, width); // generate a fresh grid with ids matching the squares array
 }
 
 function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the object IDs from squares
@@ -70,53 +86,68 @@ function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the 
   board.style.setProperty('--grid-cols', cols);
   for (c = 0; c < (rows * cols); c++) {
     let cell = document.createElement("div");
-    cell.innerText = (c);
     cell.id = (c);
     cell.addEventListener("click",leftClickSquare)
+    cell.addEventListener("contextmenu",rightClickSquare)
     board.appendChild(cell).className = "grid-item";
   };
   board.style.width = `${30 * cols}px`
 };
 
 function leftClickSquare(e) { // had to split this out because I couldn't get the event listener to pass in the target, and I wanted to do recursion which means the function needs to work off id
+    e.preventDefault()
    handleLeftClick(e.target.id)
 }
 
 function handleLeftClick(id){
     square = squares[id]
-    console.log(square)
-    if (square.flagged){ // don't do anything if the square is already flagged
-        return
-    }
+    if (square.flagged){return}// don't do anything if the square is already flagged
     if (!puzzleStarted){ // if this is the first time we click
         mineAssigner(id) // set up the mines
         adjacenyFinder() // and determine the adjacent mines count of each square
-        visualizer() // TODO: remove this when we start working on hiding / revealing
         puzzleStarted = true // make sure we don't do it again
     }
-    if (square.revealed) {
-        return // TODO: multiple reveals by clicking a revealed square
-        // for(let i=0; i < square.adjacentSquares.length; i++){ // if the square is already revealed, click !!!UNREVELEAED!!! squares around it assuming there are enough flags to cover potential mines
-        // }
+    if (square.revealed) { // handles clicking on squares that are already revealed
+        let adjacentFlagged = 0;
+        square.adjacentSquares.forEach((adjSquare) =>{
+                if (squares[adjSquare].flagged) {adjacentFlagged++} // build a count of adjacent flagged squares
+        })
+        if (square.adjacentMines - adjacentFlagged === 0) { // if enough squares are flagged, try clicking all unrevealed squares
+            square.adjacentSquares.forEach((adjSquare) =>{
+                if (!(squares[adjSquare].revealed) && (!(squares[adjSquare].flagged))) {handleLeftClick(adjSquare)} // flagged squres already already ignored, so just need to skip revealed squares here
+            })
+        }
     }
-    if (squareRevealer(id)){ // reveals the square and returns true if it is a mine
-        return
+    if (squareRevealer(id)){return} // reveals the square and returns if it is a mine to stop the function
+
+    if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent unrevealed squares
+        square.adjacentSquares.forEach((adjSquare) =>{
+            if (!(squares[adjSquare].revealed)) {handleLeftClick(adjSquare)}
+        })
     }
-    // if (square.adjacentMines === 0){ // if there are no adjacent mines it is safe to automatically click all adjacent squares
-    //     square.adjacentSquares.forEach((adjSquare) =>{ // TODO: doesn' work currently, 0s keeps getting undefined results sometimes
-    //         handleLeftClick(adjSquare.id)
-    //     })
-    // }
-    if (revealed + mines === height * width){
-        console.log("you win!") // TODO: make this an actual win result
+    if (revealedCount + mines === height * width && gameState === 0){
+        console.log("you win!") // TODO: build out win scenario
+        gameState = 1
     }
-    console.log(square.adjacentSquares)
 }
 
 function squareRevealer(id){ // reveals a square with the corresponding ID, returns true if it is a mine or false otherwise
-    //TODO: actually make it do that
-    console.log("PREST-O CHANGE-O")
+    if (!squares[id].revealed){revealedCount++}
     squares[id].revealed = true;
+    $square = $(`#${square.id}`)
+    $square.addClass(`revealed`)
+    if (square.adjacentMines !== -1){ // only do this if it's not a mine
+           $square.addClass(`adj${square.adjacentMines}`)
+           if (!(square.adjacentMines == 0)) {$square.text(`${square.adjacentMines}`)} // don't need to show 0
+           return false
+        } else {
+            $square.text(`💣`)
+            if (gameState === 0) {
+                console.log("you lose!") //TODO: built out lose scenario
+                gameState = -1
+            }
+            return true
+        }
 }
 
 function mineAssigner(startId) { // fills the board up with mines
@@ -125,7 +156,6 @@ function mineAssigner(startId) { // fills the board up with mines
         potentialMine = squares[Math.floor(Math.random() * (squares.length))]
         if ((!(potentialMine.id == startId)) && (!(squares[startId].adjacentSquares.includes(potentialMine.id))) && (potentialMine.adjacentMines !== -1)){ // doesn't do anything if the mine would be near the opening click, or adjacent to where you clicked, or is already a mine
             potentialMine.adjacentMines = -1
-            console.log(`${potentialMine.id} is now a mine!`) // TODO: can remove this when we're done
             currentMines++
         }
     }
@@ -141,8 +171,74 @@ function adjacenyFinder() { // runs through all squares and sets the value of ad
     })
 }
 
+function rightClickSquare(e) {
+    e.preventDefault()
+    square = squares[e.target.id]
+    if (square.flagged) {
+        square.flagged = false
+        $(`#${square.id}`).text(``)
+    } else 
+    if (!square.revealed){
+        square.flagged = true
+        $(`#${square.id}`).text(`🚩`)
+    }
+}
 
-function visualizer(){ // test tool, let results show up in the UI
+function resetBoard() {
+    let potentialMines = parseInt($mineInput.val()) //TODO: throw an error if it's not parseable?
+    let potentialRows = parseInt($rowInput.val())
+    let potentialColumns = parseInt($columnInput.val())
+    if (potentialRows > 40) { // when I get to 50 x 50 i start getting maximum call stack size errors
+        console.log("max 40 rows") // TODO: make this an alert
+        return
+    } else 
+    if (potentialColumns > 40) {
+        console.log("max 40 columns") // TODO: make this an alert
+        return
+    }
+    if (potentialRows < 9) {
+        console.log("min 9 rows") // TODO: make this an alert
+        return
+    } else 
+    if (potentialColumns < 9) {
+        console.log("min 9 columns") // TODO: make this an alert
+        return
+    } else
+    if (potentialMines > ((potentialRows * potentialColumns) - 9)) {
+        console.log(`Too many mines for this grid size, maximum is ${(potentialRows * potentialMines) - 9}`) // TODO: make this an alert
+    } else {
+        mines = potentialMines
+        width = potentialColumns
+        height = potentialRows
+        boardGenerator()
+        puzzleStarted = false;
+    }
+}
+function determineParameters(e){
+    buttonClicked = e.target.id
+    console.log(e.target.id)
+    if (buttonClicked === 'easyDefaults') {setParameters(10,9,9)}
+    if (buttonClicked === 'mediumDefaults') {setParameters(40,16,16)}
+    if (buttonClicked === 'hardDefaults') {setParameters(99,16,30)}
+    if (buttonClicked === 'xHardDefaults') {setParameters(180,24,30)} 
+}
+
+function setParameters(newMines,newHeight,newWidth){
+    console.log("cleek")
+    $mineInput.val(newMines)
+    $rowInput.val(newHeight)
+    $columnInput.val(newWidth)
+}
+
+
+function defaultSetter(){
+    $mineInput.val(10)
+    $rowInput.val(9)
+    $columnInput.val(9)
+}
+
+
+function cheat(){ // test tool, call this to show everything. Only works if the game is started
     squares.forEach((square) => {
         if (square.adjacentMines !== -1){ // only do this if it's not a mine
            $(`#${square.id}`).text(`${square.adjacentMines}`)
@@ -152,5 +248,6 @@ function visualizer(){ // test tool, let results show up in the UI
         
     })
 }
-boardGenerator()
 
+boardGenerator()
+defaultSetter()
