@@ -103,8 +103,8 @@ function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the 
     cell.id = (c);
     cell.addEventListener("click",leftClickSquare)
     cell.addEventListener("contextmenu",rightClickSquare)
-    cell.addEventListener("touchstart",touchStart,false)
-    cell.addEventListener("touchend",touchEnd,false)
+    // cell.addEventListener("touchstart",touchStart,false) // mobile functionality, does not work yet
+    // cell.addEventListener("touchend",touchEnd,false)
     board.appendChild(cell).className = "grid-item";
   };
   board.style.width = `${30 * cols}px`
@@ -276,10 +276,18 @@ function endGame() {
         document.getElementById(`${square.id}`).removeEventListener("contextmenu",rightClickSquare)
     })
     if(gameState === 1) { //announce that you won or lost
-        $settings.append(`<div id="winResult" class="result">you won!</div>`)
+        swal({
+            title: "You won!",
+            icon: "success",
+            button: "Another game?"
+          });
     }
     if (gameState === -1) {
-        $settings.append(`<div id="loseResult" class="result">you lost :(</div>`)
+       swal({
+        title: "You lost :(",
+        icon: "error",
+        button: "Another game?"
+      });
     }
 }
 
@@ -304,24 +312,24 @@ function startTimer() {
 
 function endTimer() {clearInterval(gameTimer)}
     
-function touchAnnouncer(){
-    alert(touchTimer)
-}
+// function touchAnnouncer(){ // mobile code, currently just flags as soon as you click so I'm saving it for later
+//     alert(touchTimer)
+// }
 
-function touchStart(e) {
-    e.preventDefault();
-    if (!touchTimer) {
-        touchTimer = setTimeout(rightClickSquare(e), 10000); // translates long touches for mobile
-    }
-}
+// function touchStart(e) {
+//     e.preventDefault();
+//     if (!touchTimer) {
+//         touchTimer = setTimeout(rightClickSquare(e), 10000); // translates long touches for mobile
+//     }
+// }
 
-function touchEnd() {
-    touchAnnouncer()
-    if (touchTimer) {
-        clearTimeout(touchTimer);
-        touchTimer = null;
-    }
-}
+// function touchEnd() {
+//     touchAnnouncer()
+//     if (touchTimer) {
+//         clearTimeout(touchTimer);
+//         touchTimer = null;
+//     }
+// }
 
 $(document).ready(function(){
 
@@ -343,7 +351,6 @@ $.fn.extend({
         });
     }
 });
-
 
 
 boardGenerator()

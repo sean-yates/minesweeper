@@ -32,6 +32,7 @@ https://i.imgur.com/NLdHxjl.png
     - MockFlow
     - JavaScript
     - Jquery
+    - SweetAlert JS plugin (sweetalert.js.org)
 
 ## Approach: 
 
