@@ -41,25 +41,26 @@
   <main>
       <h1>How to Play Minesweeper</h1>
       <p>Minesweeper is a game of logical deduction, where you have a grid with an unknown number of hidden mines that you must avoid while revealing all other squares. The entire board starts unrevealed, and you can reveal a square by clicking it (or tapping on mobile).</p>
-      <p>The first square you click will never be a mine, nor will the squares next to it. The board will show squares that aren't next to any mines as blank, and then automatically reveal anything adjacent to them to save you some obvious clicking. Squares that are next to at least one mine will show how many they are next to. After your first click you'll end up with something looking like this:</p>
+      <p>The first square you click will never be a mine, nor will the squares next to it. Squares that aren't next to any mines will show as blank and then automatically reveal anything adjacent to them to save you some obvious clicking. Squares that are next to at least one mine will show how many they are next to. After your first click you'll end up with something looking like this:</p>
       <img src="Images/startingBoard.png" alt="A starting board">
       <p>Based on this revealed information you should be able to start making deductions about where some mines are. For example, the square highlighted in this image:</p>
-      <img src="Images/startingBoardSquareHighlighted.png" alt="Starting board with one square highlighted"><!-- We lost the game we were using... probably faster to recreate than try and shop this -->
+      <img src="Images/startingBoardSquareHighlighted.png" alt="Starting board with one square highlighted">
       <p>We know that square is adjacent to one mine, and that all the squares ajdacent to it except one have been revealed as non-mines. Therefore, we know that last unrevealed square is a mine and can flag it by right clicking it (or a held down tap on mobile).</p>
-      <p>placeholder for an image of above board with one flag</p>
-      <p>The flag stops us from clicking it again unless we remove the flag by right clicking the square again. We can also use the flags to reveal squares in another way: by clicking a square that is already revealed. For example, now that the flag is in place we know everything next to the square below the one we used earlier are safe</p>
-      <p>placeholder for an image of above board with safe squares highlighted</p>
+      <img src="Images/startingBoardOneFlag.png" alt="Starting board with one square flagged">
+      <p>The flag stops us from clicking the square again unless we remove the flag by right clicking it again.</p>
+      <p>We can also leverage these flags while revealing squares through another method: clicking a square that is already revealed. For example, now that the flag is in place we know everything next to the square below the one we used earlier is safe</p>
+      <img src="Images/OneFlagOneHighlight.png" alt="Starting board with one square flagged and one square highlighted">
       <p>So if we left click that square it will reveal all of them</p>
-      <p>placeholder for an image of above board with the adjacent squares clicked</p>
-      <p>This method assumes your flags are correct, if they aren't not you'll likely lose when you try it so be careful.</p>
-      <p>Once you're comfortable with single square deductions you can start making deductions based on multiple squares. For example, we can see that the 2 in this picture is already next to one flagged mine, and has two adjacent unrevealed squares</p>
-      <p>placeholder for an image with 2 + 1 combo deduction</p>
-      <p>Since the square below it is only adjacent to 1 mine, and that square is adjacent to the two squares that must contain a mine based on our knowledge about the 2 square, any other squares the 1 is next to must be safe.</p>
-      <p>placeholder for an image with 2 + 1 combo deduction with the other 1 revealed</p>
+      <img src="Images/FlagReveal.png" alt="Squares on above board revealed">
+      <p>Be careful with this method, it assumes your flags are correctly placed on a mine. If they aren't you'll likely lose when you try it</p>
+      <p>Once you're comfortable with single square deductions you can start making deductions based on information from multiple squares. For example, we can see that the 2 in this picture is already next to one flagged mine, and has two adjacent unrevealed squares</p>
+      <img src="Images/TwoSquareHighlight.png" alt="Board with two squares highlighted">
+      <p>Since the square directly to the right of that 2 it is only adjacent to 1 mine, and that square is also adjacent to the two squares highlighted above that must contain a mine based, any other squares the 1 is next to must be safe.</p>
+      <img src="Images/ComboDeductionReveal.png" alt="Above board with one revealed">
       <p>Take your time working out multi-square deductions, the more you play the more you'll start to recognize common configurations</p>
       <p>Sometimes in Minesweeper you will hit dead ends where there is no way to know for sure where the next mine is.</p>
-      <p>placeholder for an image where guessing is required</p>
-      <p>When this happens take your best guess and if you hit a mine, just reset and try again. If you'd like a version of minesweeper that rules out dead-ends like this, try Simon Tatham's version here: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mines.html (or hopefully some day a setting on this game if I can ever figure out how to build it).</p>
+      <img src="Images/guessRequired.png" alt="Board with guessing required">
+      <p>When this happens take your best guess. If you hit a mine, just reset and try again. If you'd like a version of minesweeper that rules out dead-ends like this, try Simon Tatham's version here: <a href="https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mines.html" target="_blank">Mines</a> (or hopefully some day a setting on this game if I can ever figure out how to build it).</p>
     </main>
 </body>
 </html>

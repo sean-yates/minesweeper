@@ -58,10 +58,10 @@ Stretch goals:
 
 Choose different grid sizes / mine amounts (done)
 
-Add ability to store and view high scores across sessions
+Add ability to save and view high scores
 
 build option where game will always be solvable based on deductions, with no guessing required
 
 
 ## App Demo 
-Link to GitHub project (i.e. - username.github.io)
+https://sean-yates.github.io/minesweeper/
