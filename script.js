@@ -29,7 +29,7 @@ let sec = 0;
 let gameTimer
 let onlongtouch; 
 let touchTimer;
-let touchduration = 50; //length of time we want the user to touch before we do something
+let touchduration = 500; //length of time we want the user to touch before we do something
 
 
 // listeners
