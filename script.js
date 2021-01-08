@@ -155,6 +155,7 @@ function squareRevealer(id){ // reveals a square with the corresponding ID, retu
            return false
         } else {
             $square.text(`💣`)
+            $square.addClass(`mine`)
             if (gameState === 0) {
                 gameState = -1
                 endGame()

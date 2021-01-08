@@ -9,6 +9,12 @@ h1 {
   text-align: center;
 }
 
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
 p {
   margin-left: 15%;
   margin-right: 15%;
@@ -83,6 +89,9 @@ p {
 }
 .adj8 {
   color: grey;
+}
+.mine {
+  background-color: red;
 }
 
 #resetButton {

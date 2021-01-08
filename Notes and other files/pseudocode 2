@@ -4,11 +4,9 @@ Ok so I did everything I set out to do in Pseudocode 1 and I have working minesw
 now we want a list of nice to have features to complete, at which point we will feel comfortable beginning to work on the solvability problem
 so here is that list:
 
-1. try and get the classic flag and mine icons
-2. add screenshots to howToPlay
-3. make howToPlay pretty
-4. make win and lose prettier, maybe there are more visually appealing alerts?
-5. have board settings be the only thing on the page till the board generates, then go away until you want to generate a new board
-6. make sure github host works and add link to readme
-7. phone functionality
-8. store high scores
+1. add screenshots to howToPlay
+2. make win and lose prettier, maybe there are more visually appealing alerts?
+3. have board settings be the only thing on the page till the board generates, then go away until you want to generate a new board
+4. make sure github host works and add link to readme
+5. phone functionality
+6. store high scores
