@@ -105,6 +105,8 @@ function makeRows(rows, cols) { //adds a grid to the HTML with IDs matching the 
     cell.id = (c);
     cell.addEventListener("click",leftClickSquare)
     cell.addEventListener("contextmenu",rightClickSquare)
+    cell.addEventListener("touchstart",touchStart)
+    cell.addEventListener("touchend",touchEnd)
     board.appendChild(cell).className = "grid-item";
   };
   board.style.width = `${30 * cols}px`
@@ -304,10 +306,10 @@ function startTimer() {
 
 function endTimer() {clearInterval(gameTimer)}
     
-touchstart() {
+function touchStart() {
     touchTimer = setTimeout(rightClickSquare, touchduration); // translates long touches for mobile
 }
-touchend() {
+function touchEnd() {
     //stops short touches from firing the event
     if (touchTimer)
         clearTimeout(touchTimer);
