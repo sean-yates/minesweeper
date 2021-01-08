@@ -27,7 +27,6 @@ let squares = []
 let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 let sec = 0;
 let gameTimer
-let onlongtouch; 
 let touchTimer;
 
 
@@ -305,10 +304,14 @@ function startTimer() {
 
 function endTimer() {clearInterval(gameTimer)}
     
+function touchAnnouncer(){
+    alert(touchTimer)
+}
+
 function touchStart(e) {
     e.preventDefault();
     if (!touchTimer) {
-        touchTimer = setTimeout(rightClickSquare(e), 10000); // translates long touches for mobile
+        touchTimer = setTimeout(touchAnnouncer(), 10000); // translates long touches for mobile
     }
 }
 
