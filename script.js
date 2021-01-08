@@ -29,7 +29,7 @@ let sec = 0;
 let gameTimer
 let onlongtouch; 
 let touchTimer;
-let touchduration = 500; //length of time we want the user to touch before we do something
+let touchduration = 10; //length of time we want the user to touch before we do something
 
 
 // listeners
@@ -306,15 +306,14 @@ function startTimer() {
 
 function endTimer() {clearInterval(gameTimer)}
     
-function touchStart() {
-    touchTimer = setTimeout(rightClickSquare, touchduration); // translates long touches for mobile
+function touchStart(e) {
+    touchTimer = setTimeout(rightClickSquare(e), touchduration); // translates long touches for mobile
 }
 function touchEnd() {
     //stops short touches from firing the event
     if (touchTimer)
         clearTimeout(touchTimer);
 }
-
 
 $(document).ready(function(){
 
