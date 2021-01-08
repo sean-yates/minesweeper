@@ -311,12 +311,12 @@ function touchAnnouncer(){
 function touchStart(e) {
     e.preventDefault();
     if (!touchTimer) {
-        touchTimer = setTimeout(touchAnnouncer(), 10000); // translates long touches for mobile
+        touchTimer = setTimeout(rightClickSquare(e), 10000); // translates long touches for mobile
     }
 }
 
 function touchEnd() {
-    //stops short touches from firing the event
+    touchAnnouncer()
     if (touchTimer) {
         clearTimeout(touchTimer);
         touchTimer = null;
