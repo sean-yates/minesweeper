@@ -318,7 +318,7 @@ function touchEnd() {
 
 $(document).ready(function(){
 
-    $('.grid-item').disableSelection();
+    $('body').disableSelection();
      
  });
 
