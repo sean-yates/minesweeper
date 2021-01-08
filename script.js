@@ -26,7 +26,11 @@ let totalFlagged = 0;
 let squares = []
 let gameState = 0 // 0 for unresolved, -1 for lost, 1 for won
 let sec = 0;
-let timer
+let gameTimer
+let onlongtouch; 
+let touchTimer;
+let touchduration = 500; //length of time we want the user to touch before we do something
+
 
 // listeners
 
@@ -293,13 +297,21 @@ function cheat(){ // test tool, call this to show everything. Only works if the 
 function pad ( val ) { return val > 9 ? val : "0" + val; }
 
 function startTimer() {
-    timer = setInterval( function(){
+    gameTimer = setInterval( function(){
         $timer.html(`${parseInt(sec/60,10)}:${pad(++sec%60)}`);
     }, 1000);
 }
 
-function endTimer() {clearInterval(timer)}
+function endTimer() {clearInterval(gameTimer)}
     
+touchstart() {
+    touchTimer = setTimeout(rightClickSquare, touchduration); // translates long touches for mobile
+}
+touchend() {
+    //stops short touches from firing the event
+    if (touchTimer)
+        clearTimeout(touchTimer);
+}
 
 
 boardGenerator()
