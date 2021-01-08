@@ -52,6 +52,8 @@ Had to impose limits on board size because board generator would end up exceedin
 
 CSS.
 
+Testing mobile was difficult because changes would not show up.
+
 ## Additional information:
 
 Stretch goals:

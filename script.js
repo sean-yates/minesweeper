@@ -316,5 +316,28 @@ function touchEnd() {
 }
 
 
+$(document).ready(function(){
+
+    $('.grid-item').disableSelection();
+     
+ });
+
+// This jQuery Plugin will disable text selection for Android and iOS devices.
+// Stackoverflow Answer: http://stackoverflow.com/a/2723677/1195891
+$.fn.extend({
+    disableSelection: function() {
+        this.each(function() {
+            this.onselectstart = function() {
+                return false;
+            };
+            this.unselectable = "on";
+            $(this).css('-moz-user-select', 'none');
+            $(this).css('-webkit-user-select', 'none');
+        });
+    }
+});
+
+
+
 boardGenerator()
 defaultSetter()
