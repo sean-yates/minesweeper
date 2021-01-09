@@ -4,7 +4,6 @@ Ok so I did everything I set out to do in Pseudocode 1 and I have working minesw
 now we want a list of nice to have features to complete, at which point we will feel comfortable beginning to work on the solvability problem
 so here is that list:
 
-1. make win and lose prettier, maybe there are more visually appealing alerts?
-2. have board settings be the only thing on the page till the board generates, then go away until you want to generate a new board
-3. phone functionality
-4. store high scores
+1. have board settings be the only thing on the page till the board generates, then go away until you want to generate a new board
+2. phone functionality
+3. store high scores

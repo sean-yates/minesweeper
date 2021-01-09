@@ -306,7 +306,7 @@ function pad ( val ) { return val > 9 ? val : "0" + val; }
 
 function startTimer() {
     gameTimer = setInterval( function(){
-        $timer.html(`${parseInt(sec/60,10)}:${pad(++sec%60)}`);
+        $timer.html(`${parseInt((sec+1)/60,10)}:${pad(++sec%60)}`);
     }, 1000);
 }
 
